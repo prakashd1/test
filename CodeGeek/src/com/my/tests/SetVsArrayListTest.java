@@ -21,8 +21,8 @@ public class SetVsArrayListTest {
 		ArrayList<String> arrayList = new ArrayList<String>();
 		HashSet<String> hashSet = new HashSet<String>();
 
-		addElemetoCollection(arrayList, 50000);
-		addElemetoCollection(hashSet, 50000);
+		addElemetoCollection(arrayList, 15000);
+		addElemetoCollection(hashSet, 15000);
 
 		
 		System.out.println("total elements in array list " + arrayList.size());
@@ -67,7 +67,7 @@ public class SetVsArrayListTest {
 		System.out.println("trying to add into " + c.getClass());
 		c.add("Prakash");
 		long endTime = System.currentTimeMillis();
-		System.out.println("total time required" + (endTime - startTime));
+		System.out.println("total time required " + (endTime - startTime) +" ms");
 
 	}
 }
