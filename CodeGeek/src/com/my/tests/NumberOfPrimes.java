@@ -36,12 +36,15 @@ public class NumberOfPrimes {
 	}
 
 	public static void main(String[] args) {
+		System.out.print("Enter integer to calculate number of primes from zero:-" );
 		Scanner in = new Scanner(System.in);
 		int res;
 		int _a;
 		_a = in.nextInt();
 		res = getNumberOfPrimes(_a);
-		System.out.println(res);
+		System.out.println("Total number of primes in given range are:-"+res);
+		
+		in.close();
 
 	}
 
