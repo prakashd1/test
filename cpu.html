@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="http://getbootstrap.com/examples/justified-nav/justified-nav.css" rel="stylesheet">
+
+    <style>
+        .axis path {
+            fill: none;
+            stroke: #777;
+            shape-rendering: crispEdges;
+        }
+        .axis text {
+            font-family: Lato;
+            font-size: 13px;
+        }
+    </style>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script>
+    function readSingleFile(evt) {
+ //Retrieve the first (and only!) File from the FileList object
+ var f = evt.target.files[0];
+
+ if (f) {
+   var r = new FileReader();
+   r.onload = function(e) {
+     var contents = e.target.result;
+    //  alert( "Got the file.n"
+    //        +"name: " + f.name + "n"
+    //        +"type: " + f.type + "n"
+    //        +"size: " + f.size + " bytesn"
+    //        + "starts with: " + contents.substr(1, contents.indexOf("n"))
+    //  );
+     var jsonContent= csvJSON(contents);
+     InitChart(jsonContent);
+     console.log(jsonContent);
+   }
+   r.readAsText(f);
+ } else {
+   alert("Failed to load file");
+ }
+
+}
+
+function csvJSON(csv){
+
+var lines=csv.split("\n");
+
+var result = [];
+
+var headers=lines[0].split(",");
+
+for(var i=1;i<lines.length;i++){
+
+var obj = {};
+var currentline=lines[i].split(",");
+
+for(var j=0;j<headers.length;j++){
+obj[headers[j]] = currentline[j];
+}
+
+result.push(obj);
+
+}
+
+return result; //JavaScript object
+//return JSON.stringify(result); //JSON
+}
+
+function InitChart(data) {
+
+  var  max_x = 0, max_y = 0, min = 100;
+  var data2 = [{"iter":"1","r":"7","b":"0","avm":"12426420","fre":"800844","re":"0","pi":"0","po":"0","fr":"0","sr":"0","cy":"0","in":"5521","sy":"5","cs":"17301","us":"16","id":"79","wa":"1","pc":"1.75","ec":"35.0"},{"iter":"2","r":"6","b":"0","avm":"12434921","fre":"791876","re":"0","pi":"0","po":"0","fr":"0","sr":"0","cy":"0","in":"7978","sy":"6","cs":"23893","us":"23","id":"71","wa":"1","pc":"2.44","ec":"48.7"},{"iter":"3","r":"7","b":"0","avm":"12430579","fre":"795760","re":"0","pi":"0","po":"0","fr":"0","sr":"0","cy":"0","in":"8420","sy":"6","cs":"25558","us":"22","id":"71","wa":"1","pc":"2.45","ec":"48.9"}];
+
+    var vis = d3.select("#visualisation"),
+        WIDTH = 1000,
+        HEIGHT = 500,
+        MARGINS = {
+            top: 20,
+            right: 20,
+            bottom: 20,
+            left: 50
+        },
+        xScale = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([0, 125]),
+        yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([0, 5]),
+        xAxis = d3.svg.axis()
+        .scale(xScale),
+        yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("left");
+
+    vis.append("svg:g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
+        .call(xAxis);
+    vis.append("svg:g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+        .call(yAxis);
+    var lineGen = d3.svg.line()
+        .x(function(d) {
+            return xScale(d.iter);
+        })
+        .y(function(d) {
+            return yScale(d.pc);
+        })
+        .interpolate("basis");
+    vis.append('svg:path')
+        .attr('d', lineGen(data))
+        .attr('stroke', 'green')
+        .attr('stroke-width', 2)
+        .attr('fill', 'none');
+
+}
+
+//document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+    </script>
+
+</head>
+
+<body>
+<script>
+
+</script>
+
+
+    <div class="container">
+			<input type="file" id="fileinput" accept=".csv" onchange="readSingleFile(event)"/>
+        <div class="jumbotron">
+
+            <svg id="visualisation" width="1000" height="500"></svg>
+
+            <script>
+
+
+
+                //InitChart();
+            </script>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
